@@ -126,4 +126,97 @@ $(document).ready(function(){
       searchEventsNearMe(combinedAddress);
     });
 
+// NEW SEARCH BOX MAP FUNCTION BY MATTHEW A
+
+var input = document.getElementById('pac-input');
+var searchBox = new google.maps.places.SearchBox(input);
+
+// Relate traffic layer variable to an option button
+var trafficLayer = new google.maps.TrafficLayer();
+trafficLayer.setMap(map);
+
+// Relate transit layer variable to an option button 
+var transitLayer = new google.maps.TransitLayer();
+transitLayer.setMap(map);
+
+// Bias the SearchBox results towards current map's viewport.
+map.addListener('bounds_changed', function() {
+  searchBox.setBounds(map.getBounds());
+});
+
+var markers = [];
+// Listen for the event fired when the user selects a prediction and retrieve
+// more details for that place.
+searchBox.addListener('places_changed', function() {
+  var places = searchBox.getPlaces();
+  var image = 'http://maps.google.com/mapfiles/kml/shapes/man.png';
+    
+  if (places.length == 0) {
+    return;
+  }
+
+  // Clear out the old markers.
+  markers.forEach(function(marker) {
+   
+    marker.setMap(map);
+    position: center;
+    
+  });
+  markers = [];
+
+
+  // For each place, get the icon, name and location.
+  var bounds = new google.maps.LatLngBounds();
+  places.forEach(function(place) {
+    if (!place.geometry) {
+      console.log("Returned place contains no geometry");
+      return;
+    }
+    var icon = {
+      url: place.icon,
+      size: new google.maps.Size(71, 71),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(17, 34),
+      scaledSize: new google.maps.Size(25, 25)
+      
+      
+
+    };
+
+    // Create a custome marker for user start location .
+    markers.push(new google.maps.Marker({
+      animation: google.maps.Animation.DROP,
+      map: map,
+      icon: image,
+      label:"YOU",
+      label: {
+                text: "YOU",
+                color: "#eb3a44",
+                fontSize: "30px",
+                fontWeight: "bold"
+               
+            },
+            labelInBackground: true,
+      title: "place.name",
+      position: place.geometry.location
+     
+     
+      
+   
+     
+    }));
+
+    if (place.geometry.viewport) { 
+      // Only geocodes have viewport.
+      bounds.union(place.geometry.viewport);
+    } else {
+      bounds.extend(place.geometry.location);
+   
+    }
+  });
+  map.fitBounds(bounds);
+});
+
+//END MATTHEW A CODE
+
 });

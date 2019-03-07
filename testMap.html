@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Places Search Box</title>
+ 
+    <link rel="stylesheet" type="text/css" href="map.css"></link>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  </head>
+  <body>
+<!-- User location search to also be added to the event API via the below "pac-input" id -->
+<!--REMOVE SEARCH BOX-->
+
+
+<form>
+    <input id="number" type="text">Number</input></br>
+    <input id="street" type="text">Street</input></br>
+    <input id="city" type="text">City</input></br>
+    <input id="state" type="text">State</input></br>
+    
+    <button type="button" id="btn1">search</button> 
+</form>
+<input id="pac-input" class="controls" type="text" placeholder="Search Box">
+
+
+
+ 
+ <!-- Map display location to be resized to fit the landing page -->
+    <div id="map"></div>
+
+<!-- Script begins -->
+    <script>
+    
+    // var addressString = $("number").val()+$("street").val()+$("city").val()+$("state").val();
+    // console.log(addressString);
+
+    // User location input address
+    $("#btn1").click(function(){
+    var startLoc = $("#pac-input").val();
+    console.log(startLoc);
+    // var geo = "https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=AIzaSyCki-fwEus8QmpImbf5IS0HrltxZegbnpI";
+    // console.log(geo);
+
+    //Accept all address input field values
+    var number=$("#number").val();
+    var street = $("#street").val();
+    var city = $("#city").val();
+    var state = $("#state").val();
+    var addressString = number+" "+street+","+city+","+state;
+    console.log(addressString);
+
+
+// parse address (SAVE FOR TESTING LATER)
+    // var address_components = results[0].address_components;
+    // var components={}; 
+    // jQuery.each(address_components, function(k,v1) 
+    // {jQuery.each(v1.types, function(k2, v2){components[v2]=v1.long_name});});
+    // console.log(components.street_number);
+
+    });
+     // Setup variables to receive event search results
+        var pos1 = {lat: 40.8089897, lng:  -73.9612492};
+        var pos2 = {lat: 40.791860, lng:  -73.881810};
+        var pos3;
+
+      function initAutocomplete() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+          //Map set on NYC as a default map view before search begins
+          center: {lat: 40.730610, lng: -73.935242},
+          zoom: 11,
+          mapTypeId: 'roadmap'
+        });
+
+//-------------------------------------------------------
+// Added additional map location markers here and relate them to the above variables 
+
+        var myLatLng = pos1;
+        
+        var marker = new google.maps.Marker({
+        position: myLatLng,
+        animation: google.maps.Animation.DROP,
+        map: map,
+        label:"event 1",
+        title: 'tbd',
+      
+       
+    });
+
+
+        var myLatLng2 = pos2;
+
+        var marker = new google.maps.Marker({
+        position: myLatLng2,
+        animation: google.maps.Animation.DROP,
+        map: map,
+        label:"event 2",
+        title: 'Hello World!',
+       
+       });
+
+    // hides marker
+    //marker.setMap(null);
+// END of additional maker code
+
+// ---------------------------------------------------
+        // Create the search box and link it to the UI element.
+        var input = document.getElementById('pac-input');
+        var searchBox = new google.maps.places.SearchBox(input);
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        
+
+        // Obtain geocode of input address for submittal to event API
+        // var geocoder = new google.maps.Geocoder();
+
+        //   geocodeAddress(geocoder, map);
+        
+        
+        // Relate traffic layer variable to an option button
+        var trafficLayer = new google.maps.TrafficLayer();
+        trafficLayer.setMap(map);
+
+       // Relate transit layer variable to an option button 
+       var transitLayer = new google.maps.TransitLayer();
+        transitLayer.setMap(map);
+
+        
+
+        // Bias the SearchBox results towards current map's viewport.
+        map.addListener('bounds_changed', function() {
+          searchBox.setBounds(map.getBounds());
+        });
+        
+        var markers = [];
+        // Listen for the event fired when the user selects a prediction and retrieve
+        // more details for that place.
+        searchBox.addListener('places_changed', function() {
+          var places = searchBox.getPlaces();
+          var image = 'http://maps.google.com/mapfiles/kml/shapes/man.png';
+            
+          if (places.length == 0) {
+            return;
+          }
+
+          // Clear out the old markers.
+          markers.forEach(function(marker) {
+           
+            marker.setMap(map);
+            position: center;
+            
+          });
+          markers = [];
+    
+
+          // For each place, get the icon, name and location.
+          var bounds = new google.maps.LatLngBounds();
+          places.forEach(function(place) {
+            if (!place.geometry) {
+              console.log("Returned place contains no geometry");
+              return;
+            }
+            var icon = {
+              url: place.icon,
+              size: new google.maps.Size(71, 71),
+              origin: new google.maps.Point(0, 0),
+              anchor: new google.maps.Point(17, 34),
+              scaledSize: new google.maps.Size(25, 25)
+              
+              
+      
+            };
+
+            // Create a marker for each place.
+            markers.push(new google.maps.Marker({
+              animation: google.maps.Animation.DROP,
+              map: map,
+              icon: image,
+              label:"YOU",
+              label: {
+                        text: "YOU",
+                        color: "#eb3a44",
+                        fontSize: "30px",
+                        fontWeight: "bold"
+                       
+                    },
+                    labelInBackground: true,
+              title: "place.name",
+              position: place.geometry.location
+             
+             
+              
+           
+             
+            }));
+
+            if (place.geometry.viewport) { 
+              // Only geocodes have viewport.
+              bounds.union(place.geometry.viewport);
+            } else {
+              bounds.extend(place.geometry.location);
+           
+            }
+          });
+          map.fitBounds(bounds);
+        });
+      }
+
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCki-fwEus8QmpImbf5IS0HrltxZegbnpI&region=eng&libraries=places&callback=initAutocomplete"
+        ></script>
+  </body>
+</html>
