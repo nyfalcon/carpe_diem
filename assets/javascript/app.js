@@ -78,15 +78,17 @@ $(document).ready(function(){
       var index= $(this).attr("index");
       var fullAddress = eventsArray[index].eventAddress1 + " " +eventsArray[index].eventAddress2 + " " + eventsArray[index].eventAddressCity + ", "+ eventsArray[index].eventAddressState + ", " +eventsArray[index].eventAddressZipcode;
       console.log(index);
+      var time = eventsArray[index].eventTime;
+      time = moment(time).format('MMMM Do YYYY, h:mm a')
       $("#detail-view").empty();
       $("#detail-view").append($("<h1>").html(eventsArray[index].eventName).addClass("eventTitle"));
       $("#detail-view").append($("<img>").attr("src",eventsArray[index].eventImage).addClass("eventImage"));
       $("#detail-view").append($("<div>").wrap('<a href="'+ eventsArray[index].eventURL + '"></a>').addClass("eventURL"));
       $("#detail-view").append($("<div>").html("<p> <strong>Address : </strong></p>" + fullAddress).addClass("eventAddress"));
-      $("#detail-view").append($("<div>").html("<p> <strong>Date & Time : </strong></p>" + eventsArray[index].eventTime).addClass("eventTime"));
+      $("#detail-view").append($("<div>").html("<p> <strong>Date & Time : </strong></p>" + time).addClass("eventTime"));
       $("#detail-view").append($("<div>").addClass("text-center").html("<button type='button' id='eventBtn' class='btn btn-success btn-lg'>More Detail</button>"));
       $("#eventBtn").on("click", function() {
-        document.location = "http://www.google.com/";
+        document.location = eventsArray[index].eventURL;
       });
       var location= {lat: parseFloat(eventsArray[index].eventLat), lng: parseFloat(eventsArray[index].eventLon)};
       console.log(location);
