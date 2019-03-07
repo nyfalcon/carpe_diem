@@ -1,0 +1,135 @@
+body {
+    background-image: url(../images/background.jpg);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+}
+
+/* navbar */
+.navbar {
+    background-color: black;
+}
+.navbar-brand, .nav-link {
+    font-family: 'Sniglet', cursive;
+}
+
+/* jumbotron */
+
+.jumbotron {
+    margin: 15px 0;
+}
+
+/* map-view */
+#map-view {
+    width: 100%;
+    height: 450px;
+    border: 5px solid lightgray;
+}
+#secondContainer {
+    background-color: #ffffff;
+    height: auto;
+    margin: 10px 0;
+    border: 5px solid lightgray;
+}
+
+/* Search-Engine */
+
+#search-engine {
+    width: 100%;
+    height: 910px;
+    border: 5px solid green;
+    padding: 20px 15px;
+    background-color: white;
+    opacity: 0.9;
+    margin-bottom: 15px;
+}
+
+#current-time {
+    background-color: lightgrey;
+    margin-bottom: 20px;
+    border: 1px solid darkgray;
+    padding: 5px;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 1.2rem;
+    text-align: center;
+}
+.form-group, .input-group-text, .custom-select {
+    font-family: 'Sniglet', cursive;
+}
+
+/* search-veiw */
+
+#search-view {
+    width: 100%;
+    border-radius: 25px;
+}
+
+.input-group-text {
+    width: 100px;
+}
+
+
+
+#searchContainer, #detailContainer {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+/* detail-view */
+
+#detail-view {
+    width: 100%;
+    padding: 20px 15px;
+}
+
+.events {
+    font-size: 1.5rem;
+    padding: 15px;
+    margin: 15px auto;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    font-family: 'Ubuntu Condensed', sans-serif;
+}
+
+.eventTitle {
+    padding: 5px 15px;
+    font-size: 1.8rem;
+    margin: 10px auto;
+    font-family: 'Ubuntu Condensed', sans-serif;
+    border-bottom: 3px dotted darkgray;
+}
+
+.eventImage {
+    max-width: 100%;
+    object-fit: contain;
+    padding: 15px;
+}
+
+.eventAddress, .eventTime {
+    font-family: 'Ubuntu Condensed', sans-serif;
+    font-size: 1.2rem;
+    padding: 8px;
+    border-top: 2px solid lightgray;
+    border-bottom: 2px solid lightgray;
+    margin: 5px;
+}
+
+
+/* footer */
+
+#footer {
+    background-color: black;
+    color: white;
+    border-top: 2px solid lightgray;
+    font-family: 'Sniglet', cursive;
+}
+#footerText {
+    color: white;
+    font-family: 'Sniglet', cursive;
+}
+.footer-copyright {
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
